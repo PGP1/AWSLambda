@@ -11,7 +11,7 @@ def lambda_handler(event, context):
     eventPayload = json.dumps(event)
   
     # Print the parsed JSON message to the console. You can view this text in the Monitoring tab in the AWS Lambda console or in the Amazon CloudWatch Logs console.
-    print('Received event: ', eventText)
+    print('Received event: ', eventPayload)
   
     data = eventPayload
     s3_client = boto3.resource(
