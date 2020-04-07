@@ -13,9 +13,10 @@ exports.handler = async (event, context, callback) => {
     const { id } = JSON.parse(event.body); 
 
     const params = {
-        TableName: "RegisteredDevices",
+        TableName: "UserDevices",
         Item: {
-            ID: id,
+            User: id,
+            Device: [],
         }
     }
 
