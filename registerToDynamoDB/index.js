@@ -26,8 +26,7 @@ exports.handler = async (event, context) => {
                 'picture': defaultAvi,
                 'User': event.userName,
                 'email': event.request.userAttributes.email,
-                'createdAt': date.toISOString(),
-                'device': []
+                'createdAt': date.toISOString()
             },
             TableName: tableName
         };
