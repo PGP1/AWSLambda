@@ -5,8 +5,7 @@ const AWS = require('aws-sdk');
 AWS.config.update({ region: 'ap-southeast-2' })
 
 exports.handler = async (event, context, callback) => {  
-    
-        
+
     const documentClient = new AWS.DynamoDB.DocumentClient({ region: 'ap-southeast-2' });
 
     let response = { statusCode: 200, body: "okay" }
@@ -41,10 +40,25 @@ exports.handler = async (event, context, callback) => {
     }
 
     try {
-        if(device) {
+        let registeredParams = {
+            TableName: "RegisteredDevices", 
+            Key: {
+                ID: device
+            },
+            ExpressionAttributeValues: {
+                ":username": username
+            }
+        }
+        let fetch = await documentClient.get(registeredParams).promise();
+        
+        let notLinked = Object.keys(fetch).length > 0 && !(fetch.Item.username);
+        
+        if(notLinked) {
             await documentClient.update(params).promise();
+            registeredParams.UpdateExpression = `SET username = if_not_exists(username, :username)`;
+            await documentClient.update(registeredParams).promise();
         } else {
-            throw new Error("device cannot be null");
+            throw new Error("Device isn't available");
         }
     } catch(err) {
         response.statusCode = 500;
@@ -53,7 +67,7 @@ exports.handler = async (event, context, callback) => {
     }
 
     response.statusCode = 200;
-    response.body = "registerd ";
+    response.body = "registered ";
 
     return response;
 }
