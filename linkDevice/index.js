@@ -8,7 +8,10 @@ exports.handler = async (event, context, callback) => {
 
     const documentClient = new AWS.DynamoDB.DocumentClient({ region: 'ap-southeast-2' });
 
-    let response = { statusCode: 200, body: "okay" }
+    let response = { statusCode: 200, headers: {
+        "Access-Control-Allow-Origin" : "*", // Required for CORS support to work
+        "Access-Control-Allow-Credentials" : true // Required for cookies, authorization headers with HTTPS 
+    }, body: "okay" }
 
     const username  = event.requestContext.authorizer.claims['cognito:username'];
     const email = event.requestContext.authorizer.claims.email;
@@ -21,9 +24,7 @@ exports.handler = async (event, context, callback) => {
         response.body = "Invalid device id";
         return response;
     }
-    
-    console.log(username, email, device)
-    
+        
     const params = {
         TableName: "UserDevices",
         Key: {
