@@ -10,9 +10,8 @@ credentials = boto3.Session().get_credentials()
 awsauth = AWS4Auth(credentials.access_key, credentials.secret_key, region, service, session_token=credentials.token)
 
 host = 'https://search-plantly-es-cheap-my4i72dmshwihajjj2sbwqii3i.ap-southeast-2.es.amazonaws.com' # the Amazon ES domain, including https://
-index = 'lambda-s3-index'
-type = 'lambda-type'
-url = host + '/' + index + '/' + type
+
+type = 'rbpi-data'
 
 headers = { "Content-Type": "application/json" }
 
@@ -25,7 +24,10 @@ message_pattern = re.compile('\"(.+)\"')
 
 # Lambda execution starts here
 def handler(event, context):
-    print("event", event)
+
+    _id = event["Records"][0]["s3"]["object"]["key"].split("/")[0]
+    url = host + '/' + _id + '/' + type
+    
     for record in event['Records']:
 
         # Get the bucket name and key for the new file
