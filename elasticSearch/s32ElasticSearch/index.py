@@ -11,8 +11,6 @@ awsauth = AWS4Auth(credentials.access_key, credentials.secret_key, region, servi
 
 host = 'https://search-plantly-es-cheap-my4i72dmshwihajjj2sbwqii3i.ap-southeast-2.es.amazonaws.com' # the Amazon ES domain, including https://
 
-type = 'rbpi-data'
-
 headers = { "Content-Type": "application/json" }
 
 s3 = boto3.client('s3')
@@ -27,8 +25,7 @@ def handler(event, context):
     message = json.loads(event["Records"][0]["Sns"]["Message"])
     _id = message["Records"][0]["s3"]["object"]["key"].split("/")[0]
     
-    url = host + '/' + _id + '/' + type
-    
+
     for record in message['Records']:
 
         # Get the bucket name and key for the new file
@@ -37,7 +34,13 @@ def handler(event, context):
 
         # Get, read, and split the file into lines
         obj = s3.get_object(Bucket=bucket, Key=key)
-        body = obj['Body'].read()
+        body = json.loads(obj['Body'].read())
+        type = body["type"]
         
+        print(type)
+        
+        url = host + '/' + _id + '/' + type
 
-        r = requests.post(url, auth=awsauth, json=json.loads(body), headers=headers)
+        r = requests.post(url, auth=awsauth, json=body, headers=headers)
+        
+        print(r.text);
