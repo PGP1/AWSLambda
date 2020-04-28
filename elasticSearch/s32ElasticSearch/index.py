@@ -35,9 +35,7 @@ def handler(event, context):
         # Get, read, and split the file into lines
         obj = s3.get_object(Bucket=bucket, Key=key)
         body = json.loads(obj['Body'].read())
-        type = body["type"]
-        
-        print(type)
+        type = "user_data"
         
         url = host + '/' + _id + '/' + type
 
