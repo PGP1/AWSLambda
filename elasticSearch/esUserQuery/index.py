@@ -34,7 +34,7 @@ def lambda_handler(event, context):
     print("url", url)
     
     query = {
-        "_source": true,
+        "_source": "true",
         "query": {
             "term": {
                 "type": type
