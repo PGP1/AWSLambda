@@ -34,14 +34,15 @@ def lambda_handler(event, context):
     print("url", url)
     
     query = {
+        "_source": true,
         "query": {
-            "match": {
+            "term": {
                 "type": type
             }
         },
         "sort": [
             {
-                "time.keyword": { "order": "desc" }
+                "time": { "order": "desc" }
             }
         ]
     }
