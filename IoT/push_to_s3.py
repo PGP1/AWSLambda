@@ -13,7 +13,7 @@ def lambda_handler(event, context):
     dynamodb = boto3.resource('dynamodb', region_name='ap-southeast-2')
     table = dynamodb.Table('RegisteredDevices')
     response = table.query(
-        KeyConditionExpression=Key('ID').eq(event['pi-id']))
+        KeyConditionExpression=Key('ID').eq(event['broker-device']))
         
     humidity = 'humidity'
     water = 'water'
@@ -44,17 +44,17 @@ def lambda_handler(event, context):
     directory['ldr'] = directoryLDR
     #Parse the JSON message 
     eventText = json.dumps(event)
-    print(event['pi-id'])
+    print(event['broker-device'])
     
     # Print the parsed JSON message to the console. You can view this text in the Monitoring tab in the AWS Lambda console or in the Amazon CloudWatch Logs console.
     print('Received event: ', eventText)
     
     data = {}
-    data['humidity'] = {'pi-id': event['pi-id'], 'type': humidity, 'time': event['payload']['time'], 'value': event['payload']['data']['humidity']}
-    data['temp'] = {'pi-id': event['pi-id'], 'type': temp, 'time': event['payload']['time'], 'value': event['payload']['data']['temp']}
-    data['water'] = {'pi-id': event['pi-id'], 'type': water, 'time': event['payload']['time'], 'value': event['payload']['data']['water']}
-    data['ph'] = {'pi-id': event['pi-id'], 'type': ph, 'time': event['payload']['time'], 'value': event['payload']['data']['ph']}
-    data['ldr'] = {'pi-id': event['pi-id'], 'type': ldr, 'time': event['payload']['time'], 'value': event['payload']['data']['ldr']}
+    data['humidity'] = {'pi-id': event['broker-device'], 'type': humidity, 'time': event['payload']['time'], 'value': event['payload']['data']['humidity']}
+    data['water'] = {'pi-id': event['broker-device'], 'type': water, 'time': event['payload']['time'], 'value': event['payload']['data']['water']}
+    data['temp'] = {'pi-id': event['broker-device'], 'type': temp, 'time': event['payload']['time'], 'value': event['payload']['data']['temp']}
+    data['ph'] = {'pi-id': event['broker-device'], 'type': ph, 'time': event['payload']['time'], 'value': event['payload']['data']['ph']}
+    data['ldr'] = {'pi-id': event['broker-device'], 'type': ldr, 'time': event['payload']['time'], 'value': event['payload']['data']['ldr']}
     
     s3_client = boto3.resource(
     's3',
