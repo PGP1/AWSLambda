@@ -1,12 +1,12 @@
 import json
+import math
+import modelPredict
+from decimal import * 
 import urllib.parse
 import boto3
 import re
 
-print('Loading function')
-
 s3 = boto3.client('s3')
-
 
 def iterate_bucket_items(bucket, prefix, ignore):
     """
@@ -24,7 +24,7 @@ def iterate_bucket_items(bucket, prefix, ignore):
     operation_parameters = {'Bucket': bucket,
                             'Prefix': prefix}
                             
-    types = ['LDR', 'waterLevel', 'phLevel', 'temp', 'humidity']
+    types = ['ldr', 'water', 'ph', 'temp', 'humidity']
     types.remove(ignore)
     
     page_iterator = paginator.paginate(**operation_parameters)
@@ -32,9 +32,8 @@ def iterate_bucket_items(bucket, prefix, ignore):
     get_last_modified = lambda obj: int(obj['LastModified'].strftime('%s'))
 
     for page in page_iterator:
-        print('p', page)
         if page['KeyCount'] > 0:
-            print("gatest", sorted(page['Contents'], key=get_last_modified))
+            print("latest", sorted(page['Contents'], key=get_last_modified))
             for item in sorted(page['Contents'], key=get_last_modified):
                 key = item['Key']
                 if(pattern.match(key)):
@@ -43,9 +42,26 @@ def iterate_bucket_items(bucket, prefix, ignore):
                         types.remove(type)
                         yield item
 
+def formatWater(waterVal):
+    
+    fval = float(float(waterVal)/100)*2
+
+    fDec = str(float(fval)).split('.')[1]
+    waterScaled = 0
+        
+    if float(fDec) >= 5:
+        waterScaled = math.ceil(fval)
+    if float(fDec) < 5 and float(fDec) > 0:
+        waterScaled = math.floor(fval)
+    elif float(fDec) == 0:
+        waterScaled = fval
+    
+    return waterScaled
+
 
 def lambda_handler(event, context):
     #1 - Get the bucket name
+    print(event)
     message = json.loads(event["Records"][0]["Sns"]["Message"])
 
     bucket = message['Records'][0]['s3']['bucket']['name']
@@ -56,32 +72,57 @@ def lambda_handler(event, context):
     data = key.split("/")
     folder = data[0]
     currentMeasure = data[1]
+    print("currentMeasure : " , currentMeasure)
     try:
         #3 - Fetch the file from S3
         response = s3.get_object(Bucket=bucket, Key=key)
-
+        print("response", response)
         #4 - Deserialize the file's content
         text = response["Body"].read().decode()
         data = json.loads(text)
-
-
+        
+    
+        features = ['water_level', 'temperature_level', 'ldr', 'pH','humidity']
+        feat_data = {}
+        feat_data[currentMeasure] = data['value']
+    
         # response = s3.get_object(Bucket=bucket, Key='ghzy567-test7/LDR')
 
         # #4 - Deserialize the file's content
         # text = response["Body"].read().decode()
         # data = json.loads(text)
-        
+
         
         for i in iterate_bucket_items(bucket, folder, ignore=currentMeasure):
             print("i", i)
-  
+            page_key = i["Key"].split("/")[1]
+            temp = s3.get_object(Bucket=bucket, Key=i["Key"])
+            bod = temp["Body"].read().decode()
+            da = json.loads(bod)
+            feat_data[page_key] = da["value"]
+
+
         #5 - Print the content
-        print("new", data)
+        print("feat_data", feat_data)
+       
+        feat_data['water_level'] = formatWater(feat_data['water'])
+        feat_data['temperature_level'] = feat_data['temp']
+        feat_data['pH'] = feat_data['ph']
         
+        del feat_data['ph']
+        del feat_data['temp']
+        del feat_data['water']
+        
+        print("formatted feat_data", feat_data)
         #6 - Parse and print the transactions
+        
+        prediction = modelPredict.predict(feat_data)
 
     except Exception as e:
         print(e)
         raise e
         
-        
+
+
+
+
