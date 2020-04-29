@@ -41,7 +41,7 @@ def lambda_handler(event, context):
         },
         "sort": [
             {
-                "time": { "order": "desc" }
+                "time": { "order": "asc" }
             }
         ]
     }
