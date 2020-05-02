@@ -49,7 +49,7 @@ exports.handler = async (event, context, callback) => {
                 ID: device
             },
             ExpressionAttributeValues: {
-                ":User": username
+                ":username": username
             }
         }
         let fetch = await documentClient.get(registeredParams).promise();
@@ -58,7 +58,7 @@ exports.handler = async (event, context, callback) => {
         
         if(notLinked) {
             await documentClient.update(params).promise();
-            registeredParams.UpdateExpression = `SET User = if_not_exists(User, :User)`;
+            registeredParams.UpdateExpression = `SET username = if_not_exists(username, :username)`;
             await documentClient.update(registeredParams).promise();
         } else {
             throw new Error("Device isn't available");
