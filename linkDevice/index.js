@@ -24,7 +24,9 @@ exports.handler = async (event, context, callback) => {
         response.body = "Invalid device id";
         return response;
     }
-        
+    
+    console.log(username, email, device)
+    
     const params = {
         TableName: "UserDevices",
         Key: {
@@ -47,7 +49,7 @@ exports.handler = async (event, context, callback) => {
                 ID: device
             },
             ExpressionAttributeValues: {
-                ":username": username
+                ":User": username
             }
         }
         let fetch = await documentClient.get(registeredParams).promise();
@@ -56,14 +58,14 @@ exports.handler = async (event, context, callback) => {
         
         if(notLinked) {
             await documentClient.update(params).promise();
-            registeredParams.UpdateExpression = `SET username = if_not_exists(username, :username)`;
+            registeredParams.UpdateExpression = `SET User = if_not_exists(User, :User)`;
             await documentClient.update(registeredParams).promise();
         } else {
             throw new Error("Device isn't available");
         }
     } catch(err) {
-        response.statusCode = 500;
-        response.body = err.message;
+        response.statusCode = 400;
+        response.body = JSON.stringify({message: err.message});
         return response;
     }
 
