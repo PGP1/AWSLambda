@@ -14,7 +14,7 @@ def lambda_handler(event, context):
         KeyConditionExpression=Key('ID').eq(event['broker-id']))
         
     pidevice = response['Items'][0]['ID']
-    user = response['Items'][0]['User']
+    user = response['Items'][0]['username']
     filename = "{}-{}-resources.json".format(pidevice, user)
     directory_value = "{}-{}/resources/{}".format(pidevice, user, filename)
     
@@ -26,6 +26,7 @@ def lambda_handler(event, context):
     
     data = {}
     data['broker-id'] = event['broker-id']
+    data['type'] = event['type']
     data['status'] = event['status']
     data['uptime'] = event['uptime']
     data['cpu-percent'] = event['cpu-percent']

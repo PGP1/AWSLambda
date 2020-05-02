@@ -14,7 +14,9 @@ def lambda_handler(event, context):
     table = dynamodb.Table('RegisteredDevices')
     response = table.query(
         KeyConditionExpression=Key('ID').eq(event['broker-device']))
-        
+    
+    # TO DO Implement if empty functionality
+    # if response['Items'][0]['User' == ''"    
     humidity = 'humidity'
     water = 'water'
     temp = 'temp'
@@ -22,7 +24,7 @@ def lambda_handler(event, context):
     ldr = 'ldr'
     
     pidevice = response['Items'][0]['ID']
-    user = response['Items'][0]['User']
+    user = response['Items'][0]['username']
     time =  event['payload']['time']
     filenameHumidity = '%s-%s-%s-%s.json' % (pidevice, user, time, humidity)
     filenameWater = '%s-%s-%s-%s.json' % (pidevice, user, time, water)
