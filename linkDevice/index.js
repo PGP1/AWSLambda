@@ -54,9 +54,6 @@ exports.handler = async (event, context, callback) => {
         }
         let fetch = await documentClient.get(registeredParams).promise();
         
-        console.log("length", bject.keys(fetch).length)
-                console.log("length", bject.keys(fetch).length)
-
         let notLinked = Object.keys(fetch).length > 0 && !(fetch.Item.username || fetch.Item.username.length == 0);
         
         if(notLinked) {
