@@ -54,11 +54,13 @@ exports.handler = async (event, context, callback) => {
         }
         let fetch = await documentClient.get(registeredParams).promise();
         
-        let notLinked = Object.keys(fetch).length > 0 && !(fetch.Item.username || fetch.Item.username.length !== 0);
+     
+        let notLinked = Object.keys(fetch).length > 0 && (!fetch.Item.username);
+    
         
         if(notLinked) {
             await documentClient.update(params).promise();
-            registeredParams.UpdateExpression = `SET username = if_not_exists(username, :username)`;
+           registeredParams.UpdateExpression = `SET username = if_not_exists(username, :username)`;
             await documentClient.update(registeredParams).promise();
         } else {
             throw new Error("Device isn't available");
