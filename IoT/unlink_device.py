@@ -55,6 +55,10 @@ def lambda_handler(event, context):
         )
     
     return {
+        "header": {
+            "Access-Control-Allow-Origin" : "*",
+            "Access-Control-Allow-Credentials" : True 
+        },
         'statusCode': 200,
         'body': json.dumps('Unlinked successfully')
     }
