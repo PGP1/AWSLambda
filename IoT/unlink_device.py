@@ -41,6 +41,7 @@ def lambda_handler(event, context):
                 'ID': event["ID"]
             },
             UpdateExpression='REMOVE username'
+        
         )
         user_table.update_item(
             Key={
@@ -52,8 +53,9 @@ def lambda_handler(event, context):
             }
         )
     
+    
     return {
-        "header": {
+        "headers": {
             "Access-Control-Allow-Origin" : "*",
             "Access-Control-Allow-Credentials" : True 
         },
