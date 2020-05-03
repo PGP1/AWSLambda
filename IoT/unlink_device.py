@@ -7,7 +7,7 @@ device_table = dynamodb.Table('RegisteredDevices')
 user_table = dynamodb.Table('UserDevices')
 def lambda_handler(event, context):
     username = event["requestContext"]["authorizer"]["claims"]["cognito:username"]
-
+    
     event = json.loads(event["body"])
     
     device = device_table.get_item(
@@ -34,15 +34,13 @@ def lambda_handler(event, context):
             'body': json.dumps("You don't own the device")
         }
         
+
     if(check == True):
         device_table.update_item(
             Key={
                 'ID': event["ID"]
             },
-            UpdateExpression='SET username = :val',
-            ExpressionAttributeValues={
-                ':val': ' '
-            }
+            UpdateExpression='REMOVE username'
         )
         user_table.update_item(
             Key={
