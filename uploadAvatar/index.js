@@ -8,8 +8,7 @@ const IAM_USER_SECRET = 'MyApt6GiTWtCTo/3xt2lECbQzL1duocrbYzKZfbw';
 
 // "exports.handler" must match the entrypoint defined in the lambda Config.
 exports.handler = function(event,context,callback){
-    console.log('e', event)
-    
+
     const documentClient = new AWS.DynamoDB.DocumentClient({ region: 'ap-southeast-2' });
 
     let response = { 
