@@ -3,11 +3,13 @@ var multipart = require("parse-multipart");
 const AWS = require('aws-sdk');
 
 const BUCKET_NAME = 'plantly-avatar';
-const IAM_USER_KEY = 'AKIAZC3Y5P7PTC7D3TAG';
-const IAM_USER_SECRET = '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';
+const IAM_USER_KEY = 'AKIAZC3Y5P7PXWKUWKNR';
+const IAM_USER_SECRET = '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';
 
 // "exports.handler" must match the entrypoint defined in the lambda Config.
 exports.handler = function(event,context,callback){
+    console.log('e', event)
+    
     const documentClient = new AWS.DynamoDB.DocumentClient({ region: 'ap-southeast-2' });
 
     let response = { 
@@ -22,10 +24,11 @@ exports.handler = function(event,context,callback){
     
     const username  = event.requestContext.authorizer.claims['cognito:username'];
     var bodyBuffer = Buffer.from(event['body'].toString(),'base64');
-    var boundary = multipart.getBoundary(event.headers['Content-Type']);
+    var boundary = multipart.getBoundary(event.headers['content-type']);
 
     var file = multipart.Parse(bodyBuffer,boundary)[0];
     
+    console.log("f", file)
    
     let s3bucket = new AWS.S3({
        accessKeyId: IAM_USER_KEY,
