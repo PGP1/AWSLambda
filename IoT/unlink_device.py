@@ -41,7 +41,7 @@ def lambda_handler(event, context):
             },
             UpdateExpression='SET username = :val',
             ExpressionAttributeValues={
-                ':val': ''
+                ':val': ' '
             }
         )
         user_table.update_item(
