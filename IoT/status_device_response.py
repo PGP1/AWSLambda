@@ -27,6 +27,7 @@ def lambda_handler(event, context):
     data = {}
     data['broker-id'] = event['broker-id']
     data['type'] = event['type']
+    data['time'] = event['time']
     data['status'] = event['status']
     data['uptime'] = event['uptime']
     data['cpu-percent'] = event['cpu-percent']
