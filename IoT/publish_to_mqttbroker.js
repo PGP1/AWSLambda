@@ -20,11 +20,17 @@ exports.handler = async (event, context, callback) => {
 
     var params = {
         topic: 'awsiot_to_localgateway/b1',
-        payload: JSON.stringify({
-            "ID": body.id,
-            "username": username,
-            "light": body.light
-        }),
+        payload: JSON.stringify(
+            {
+                "controller": {
+                    "username": username,
+                    "ID": body.id,
+                    "light": body.light,
+                    "fan": body.fan,
+                    "pump": body.pump,
+                    "type": "arduino"
+                }
+            }),
         qos: 0
     };
 
