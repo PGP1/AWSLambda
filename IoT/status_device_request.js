@@ -18,11 +18,13 @@ exports.handler = async (event, context, callback) => {
     }
     
     const username  = event.requestContext.authorizer.claims['cognito:username'];
-    
+
+    let body = JSON.parse(event.body);
+
     var params = {
         topic: 'status_request/b1',
         payload: JSON.stringify({
-            "ID": event["body"],
+            "ID": body.id,
             "username": username
         }),
         qos: 0
