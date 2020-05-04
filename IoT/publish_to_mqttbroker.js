@@ -6,8 +6,8 @@ var iotdata = new AWS.IotData({endpoint: 'a5dhqdjw6qpyv-ats.iot.ap-southeast-2.a
 exports.handler = async (event, context, callback) => {
    
     var params = {
-    topic: 'awsiot_to_localgateway',
-    payload: JSON.stringify({message: "Turn On - Light"}),
+    topic: 'awsiot_to_localgateway/b1',
+    payload: JSON.stringify(event),
     qos: 0
     };
     
