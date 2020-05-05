@@ -2,13 +2,13 @@ from __future__ import print_function
   
 import json
 import boto3
+import datetime
 
 from boto3.dynamodb.conditions import Key, Attr
   
 print('Loading function')
 
 def lambda_handler(event, context):
-    
     # Client
     dynamodb = boto3.resource('dynamodb', region_name='ap-southeast-2')
     table = dynamodb.Table('RegisteredDevices')
@@ -16,7 +16,7 @@ def lambda_handler(event, context):
         KeyConditionExpression=Key('ID').eq(event['broker-device']))
     
     # TO DO Implement if empty functionality
-    # if response['Items'][0]['User' == ''"    
+    # if response['Items'][0]['User' == ''"   
     humidity = 'humidity'
     water = 'water'
     temp = 'temp'
@@ -25,7 +25,9 @@ def lambda_handler(event, context):
     
     pidevice = response['Items'][0]['ID']
     user = response['Items'][0]['username']
-    time =  event['payload']['time']
+    time = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
+    print(time)
+    
     filenameHumidity = '%s-%s-%s-%s.json' % (pidevice, user, time, humidity)
     filenameWater = '%s-%s-%s-%s.json' % (pidevice, user, time, water)
     filenameTemp = '%s-%s-%s-%s.json' % (pidevice, user, time, temp)
