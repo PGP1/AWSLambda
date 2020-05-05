@@ -50,12 +50,12 @@ def lambda_handler(event, context):
                       "avg": { 
                         "field": "value" 
                       } 
-                    }
-                },
-                "info" : {
-                    "extended_stats" : {
-                        "field" : "value",
-                        "sigma" : 3 
+                    },
+                    "info" : {
+                        "extended_stats" : {
+                            "field" : "value",
+                            "sigma" : 3 
+                        }
                     }
                 }
             }
