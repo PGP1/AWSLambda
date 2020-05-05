@@ -3,8 +3,8 @@ var multipart = require("parse-multipart");
 const AWS = require('aws-sdk');
 
 const BUCKET_NAME = 'plantly-avatar';
-const IAM_USER_KEY = 'AKIAZC3Y5P7PXWKUWKNR';
-const IAM_USER_SECRET = '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';
+const IAM_USER_KEY = 'AKIAZC3Y5P7PWQJPCLGD';
+const IAM_USER_SECRET = '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';
 
 // "exports.handler" must match the entrypoint defined in the lambda Config.
 exports.handler = function(event,context,callback){
@@ -38,10 +38,11 @@ exports.handler = function(event,context,callback){
     var re = /(?:\.([^.]+))?$/;
 
     var ext = re.exec(file.filename)[1];
+    let random = Math.floor(Math.random() * 1000);
 
     let params = {
         Bucket: BUCKET_NAME,
-        Key: `${username}/profile.${ext}`,
+        Key: `${username}/profile${random}.${ext}`,
         Body: file.data,
     };
  
@@ -62,7 +63,7 @@ exports.handler = function(event,context,callback){
                     '#avatar': 'picture'
                 },
                 ExpressionAttributeValues: {
-                    ":url": `https://plantly-avatar.s3-ap-southeast-2.amazonaws.com/${username}/profile.${ext}`
+                    ":url": `https://plantly-avatar.s3-ap-southeast-2.amazonaws.com/${username}/profile${random}.${ext}`
                 },
                 ReturnValues: 'UPDATED_NEW'
             }
