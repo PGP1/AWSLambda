@@ -39,6 +39,21 @@ def lambda_handler(event, context):
                 "type": type
             }
         },
+        "aggs" : {
+            "avgBucket" : {
+                "date_histogram" : {
+                    "field" : "time",
+                    "interval" : "hour"
+                },
+                "aggs" : {
+                    "average" : {
+                      "avg": { 
+                        "field": "value" 
+                      } 
+                    }
+                }
+            }
+        },
         "sort": [
             {
                 "time": { "order": "asc" }
