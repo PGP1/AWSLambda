@@ -51,6 +51,12 @@ def lambda_handler(event, context):
                         "field": "value" 
                       } 
                     }
+                },
+                "info" : {
+                    "extended_stats" : {
+                        "field" : "value",
+                        "sigma" : 3 
+                    }
                 }
             }
         },
