@@ -40,6 +40,12 @@ def lambda_handler(event, context):
             }
         },
         "aggs" : {
+            "total" : { 
+               "extended_stats" : {
+                  "field" : "value",
+                  "sigma" : 3
+                } 
+            },
             "avgBucket" : {
                 "date_histogram" : {
                     "field" : "time",
