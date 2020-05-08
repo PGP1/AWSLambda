@@ -4,9 +4,11 @@ from boto3.dynamodb.conditions import Key, Attr
 
 print('Loading function')
 
+from random import seed
+from random import random
+
 
 def lambda_handler(event, context):
-    
     # Client
     dynamodb = boto3.resource('dynamodb', region_name='ap-southeast-2')
     table = dynamodb.Table('RegisteredDevices')

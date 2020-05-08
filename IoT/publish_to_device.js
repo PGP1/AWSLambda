@@ -18,7 +18,7 @@ exports.handler = async (event, context, callback) => {
     const username  = event.requestContext.authorizer.claims['cognito:username'];
 
     let body = JSON.parse(event["body"])
-
+    //let body =event["body"]
     var params = {
         topic: 'awsiot_to_localgateway/b1',
         payload: JSON.stringify(
@@ -47,4 +47,3 @@ exports.handler = async (event, context, callback) => {
     callback();
     return response;
 };
-
