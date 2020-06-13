@@ -8,6 +8,7 @@ import math
 import re
 import datetime
 import requests
+import random
 from requests_aws4auth import AWS4Auth
 
 # grab environment variables
@@ -136,7 +137,7 @@ def lambda_handler(event, context):
     write_json['time'] = datetime.datetime.now().isoformat()
     
     
-    key = _id + '/' + 'predictions' + '/' + write_json['time'] + '-prediction.json'
+    key = _id + '/' + 'predictions' + '/' + str(random.randint(0, 999999)) + '-prediction.json'
     
     s3_bucket.put_object(Body=json.dumps(write_json), Bucket='iot-plant-data', Key=key)
     
