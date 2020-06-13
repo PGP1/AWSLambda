@@ -8,7 +8,7 @@ Plantly uses a micro-service architecture so the functions here belong to differ
 - getMyDevices API - Fetch and write device data to DynamoDB
 - getUserData API - Fetch and write user Data to DynamoDB
 - linkDevice - Standalone lambda function to link a device to a user ID
-- modelPredict API - Websocket API for fetching model prediction data
+- getPrediction API - Websocket API for fetching model prediction data
 - registerDevice - Standalone lambda function to register a device
 - registerToDynamoDB - Link device to account on DynamoDB
 - uploadAvatar - Update a user avatar on the front-end
