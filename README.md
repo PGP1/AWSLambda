@@ -69,20 +69,24 @@ If you have issues look at the latest develop guide instructions from AWS: https
 
 ### 2.3 Deploy lambda functions for IoT Bridge
 
-Take a look at this thorough documentation from AWS, to follow the implementation and set up of the AWSLambda functions to IotCore
-https://docs.aws.amazon.com/iot/latest/developerguide/iot-lambda-rule.html
-
 Summary:
 
 1) To deploy prexisting functions, copy the function, to the relevant function in the AWS Lambda Function Console. 
 
+<img src="/img/choose-act.png">
+
 2) Check that the triggers have been attached
+
+
 
 Summary Deploy: 
 
 1) Go to the AWS Lambda Function Console, and create a function
+<img src="/img/select-hello-world.png">
 
 2) Add a trigger, and select 'IoT Core Rules'
+
+<img src="/img/lambda-enter-rule-name.png">
 
 3) Add in the relevant SQL Statement to allow for a trigger from a topic
 
