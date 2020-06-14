@@ -13,18 +13,19 @@ exports.handler = async (event, context, callback) => {
             "Access-Control-Allow-Origin" : "*", // Required for CORS support to work
             "Access-Control-Allow-Credentials" : true // Required for cookies, authorization headers with HTTPS 
         }, 
-        "body": JSON.stringify({ status: "good from publish_to_device" })
+        "body": JSON.stringify({ status: "good" })
     };
     const username  = event.requestContext.authorizer.claims['cognito:username'];
 
     let body = JSON.parse(event["body"])
-    //let body =event["body"]
+
     var params = {
         topic: 'awsiot_to_localgateway/b1',
         payload: JSON.stringify(
             {
                 "controller": {
-                    "username": username,
+                    "username": 'test',
+                    "ID": body.id,
                     "light": body.light,
                     "fan": body.fan,
                     "pump": body.pump,
@@ -44,6 +45,7 @@ exports.handler = async (event, context, callback) => {
             console.log("Success, I guess.");
         }
     });
-    callback();
+
     return response;
 };
+
