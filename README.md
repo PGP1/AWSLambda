@@ -23,25 +23,33 @@ https://docs.aws.amazon.com/lambda/latest/dg/services-apigateway.html
 
 ## 2. Deployment
 
-[[LINH WRITE HERE]]
+The deployment is a manual process, as the entire backend is a serverless, and performs its logic through triggers of rules set by IoT Core & API Gateway
 
 ### 2.1 Deploy Lambda
 
-To deploy a Lambda function simply clone or copy the code to a zip file and upload to the AWS Lambda cloud console. 
+To deploy a Lambda function simply clone or copy the code to a zip file and upload to the AWS Lambda cloud console, to the matching function name
 
 ### 2.2 Link function to an API in AWS API Gateway
 
-For the REST or WebSocket API functions you must then link to it when you create a new route in an API using the cloud console for API Gateway.
+Summary:
 
-Assuming you have already created an API:
+1) To deploy prexisting functions, copy the function, to the relevant function in the AWS Lambda Function Console. 
 
-From the Actions dropdown menu, choose Create Method.
+2) Check that the triggers have been attached (check for APIGateway Links)
 
-Under the resource name (/), you'll see a dropdown menu. Choose GET/POST, or in the case of websocket create a new route.
 
-Integration type, choose Lambda Function to enable Lambdy proxy integration. Make sure region is selected as **ap-southeast-2** and enter the name of the function.
 
-When the Add Permission to Lambda Function popup appears (saying "You are about to give API Gateway permission to invoke your Lambda function…"), choose OK to grant API Gateway that permission.
+Summary of API Gateway Set Up:
+
+1) From the Actions dropdown menu, choose Create Method.
+
+2) Under the resource name > you'll see a dropdown menu. 
+
+3) Choose GET/POST, or in the case of websocket create a new route.
+
+4) Integration type, choose Lambda Function to enable Lambdy proxy integration. Make sure region is selected as **ap-southeast-2** and enter the name of the function.
+
+5) When the Add Permission to Lambda Function popup appears (saying "You are about to give API Gateway permission to invoke your Lambda function…"), choose OK to grant API Gateway that permission.
 
 If you have issues look at the latest develop guide instructions from AWS: https://docs.aws.amazon.com/apigateway/latest/developerguide/getting-started.html
 
@@ -50,8 +58,25 @@ If you have issues look at the latest develop guide instructions from AWS: https
 
 ### 2.3 Deploy lambda functions for IoT Bridge
 
+Take a look at this thorough documentation from AWS, to follow the implementation and set up of the AWSLambda functions to IotCore
+https://docs.aws.amazon.com/iot/latest/developerguide/iot-lambda-rule.html
 
+Summary:
 
+1) To deploy prexisting functions, copy the function, to the relevant function in the AWS Lambda Function Console. 
+
+2) Check that the triggers have been attached
+
+Summary Deploy: 
+
+1) Go to the AWS Lambda Function Console, and create a function
+
+2) Add a trigger, and select 'IoT Core Rules'
+
+3) Add in the relevant SQL Statement to allow for a trigger from a topic
+
+Take a look at this thorough documentation from AWS, to follow the implementation and set up of the AWSLambda functions to IotCore
+https://docs.aws.amazon.com/iot/latest/developerguide/iot-lambda-rule.html
 
 ## 3. Testing
 
