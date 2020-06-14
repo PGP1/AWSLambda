@@ -1,10 +1,14 @@
 // see also: https://www.npmjs.com/package/parse-multipart
 var multipart = require("parse-multipart");
 const AWS = require('aws-sdk');
+require('dotenv').config()
+
+
+// made sure you have loaded a .env file with credentials :)
 
 const BUCKET_NAME = 'plantly-avatar';
-const IAM_USER_KEY = '81rkz7+9L9og4xxxxxMdg/w00TxzS0vE';
-const IAM_USER_SECRET = '81rkz7+9L9og4xxxxxMdg/w00TxzS0vE';
+const IAM_USER_KEY = process.env.IAM_USER_KEY;
+const IAM_USER_SECRET = process.env.IAM_USER_SECRET;
 
 // "exports.handler" must match the entrypoint defined in the lambda Config.
 exports.handler = function(event,context,callback){
