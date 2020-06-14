@@ -17,15 +17,16 @@ exports.handler = async (event, context, callback) => {
         "body": JSON.stringify({ status: "good" })
     }
     
-    const username  = event.requestContext.authorizer.claims['cognito:username'];
+    // const username  = event.requestContext.authorizer.claims['cognito:username'];
 
-    let body = JSON.parse(event.body);
-
+    //let body = JSON.parse(event.body);
+      let body = event.body;
     var params = {
         topic: 'status_request/b1',
         payload: JSON.stringify({
             "ID": body.id,
-            "username": username
+            "username": 'test',
+            "message": body.message
         }),
         qos: 0
     };
@@ -38,6 +39,5 @@ exports.handler = async (event, context, callback) => {
             console.log("Success, I guess.");
         }
     });
-    
     return response;
 };
