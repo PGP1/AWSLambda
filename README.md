@@ -15,6 +15,8 @@ Plantly uses a micro-service architecture so the functions here belong to differ
 - registerToDynamoDB - Link device to account on DynamoDB
 - uploadAvatar - Update a user avatar on the front-end
 
+<img src="/img/PIOT_5.png">
+
 ## 1. Pre-Requistites
 
 An AWS Account and an API Gateway API route to call a function, you will also need an IAM role with appropriate privileges to execute Lambda functions and also save logs to Cloudwatch
@@ -29,7 +31,9 @@ The deployment is a manual process, as the entire backend is a serverless, and p
 
 To deploy a Lambda function simply clone or copy the code to a zip file and upload to the AWS Lambda cloud console, to the matching function name
 
+
 ### 2.2 Link function to an API in AWS API Gateway
+
 
 Summary:
 
@@ -37,15 +41,22 @@ Summary:
 
 2) Check that the triggers have been attached (check for APIGateway Links)
 
-
+<img src="/img/get_user_data.png">
 
 Summary of API Gateway Set Up:
 
 1) From the Actions dropdown menu, choose Create Method.
 
+<img src="/img/iot_api_gateway_2.png">
+
 2) Under the resource name > you'll see a dropdown menu. 
 
+<img src="/img/websocket_api_gateway.png">
+
+
 3) Choose GET/POST, or in the case of websocket create a new route.
+<img src="/img/iot_api_gateway_1.png">
+
 
 4) Integration type, choose Lambda Function to enable Lambdy proxy integration. Make sure region is selected as **ap-southeast-2** and enter the name of the function.
 
