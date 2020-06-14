@@ -1,6 +1,8 @@
 # AWS Lambda
 This repo is for version-controlling the API/Lambda functions that control the Plantly backend.
 
+**These lambda functions are all deployed manually, this repo simply serves as a repository for the latest version**
+
 Plantly uses a micro-service architecture so the functions here belong to different micro-services and different APIs.
 
 - IoT API - Bridge the MQTT communication between the raspberry pi and our AWS cloud
@@ -21,20 +23,39 @@ https://docs.aws.amazon.com/lambda/latest/dg/services-apigateway.html
 
 ## 2. Deployment
 
+[[LINH WRITE HERE]]
+
 ### 2.1 Deploy Lambda
 
 To deploy a Lambda function simply clone or copy the code to a zip file and upload to the AWS Lambda cloud console. 
 
 ### 2.2 Link function to an API in AWS API Gateway
 
-You must then link to it when you create a new route in API Gateway.
+For the REST or WebSocket API functions you must then link to it when you create a new route in an API using the cloud console for API Gateway.
 
-https://docs.aws.amazon.com/apigateway/latest/developerguide/apigateway-getting-started-with-rest-apis.html
+Assuming you have already created an API:
+
+From the Actions dropdown menu, choose Create Method.
+
+Under the resource name (/), you'll see a dropdown menu. Choose GET/POST, or in the case of websocket create a new route.
+
+Integration type, choose Lambda Function to enable Lambdy proxy integration. Make sure region is selected as **ap-southeast-2** and enter the name of the function.
+
+When the Add Permission to Lambda Function popup appears (saying "You are about to give API Gateway permission to invoke your Lambda function…"), choose OK to grant API Gateway that permission.
+
+If you have issues look at the latest develop guide instructions from AWS: https://docs.aws.amazon.com/apigateway/latest/developerguide/getting-started.html
+
+
+
+
+### 2.3 Deploy lambda functions for IoT Bridge
+
+
 
 
 ## 3. Testing
 
-Lambda functions are tested using AWS Cloudwatch. Make sure you enable logging when you create an API. You will find each APi has its own "Log Group" and inside each Log Group are logs for a particular function called by a route.
+Lambda functions are tested using AWS Cloudwatch. Make sure you enable logging when you create an API. In the API Gateway console, find the Logs/Tracing option under Stage Editor pane for the API and enable Cloudwatch Logs. You will find each APi has its own "Log Group" and inside each Log Group are logs for a particular function called by a route.
 
 However you can also do manual testing with either Postman or wscat.
 
